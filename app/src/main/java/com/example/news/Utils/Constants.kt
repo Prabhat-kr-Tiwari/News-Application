@@ -9,7 +9,6 @@ class Constants {
 
         //kumar api
         const val API_KEY="07b469df27604fdd82a29cb6465ee634"
-
         const val BASE_URL="https://newsapi.org/"
         const val QUERY_PAGE_SIZE=20
     }

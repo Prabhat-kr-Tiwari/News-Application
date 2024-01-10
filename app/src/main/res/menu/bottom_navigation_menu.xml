@@ -12,7 +12,7 @@
         />
     <item android:id="@+id/searchNewsFragment"
         android:title="Search News"
-        android:icon="@drawable/layers_fill"
+        android:icon="@drawable/baseline_search_24"
         />
 
 
