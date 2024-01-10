@@ -77,6 +77,9 @@ class LatestFeedFragment : Fragment() {
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.breakingNewPage == totalPages
+                        if(isLastPage) {
+                        binding.rvBreakingNews.setPadding(0, 0, 0, 0)
+                    }
 
                     }
                 }
@@ -131,8 +134,6 @@ class LatestFeedFragment : Fragment() {
             if(shouldPaginate) {
                 viewModel.getBreakingNews("us")
                 isScrolling = false
-            } else {
-                binding.rvBreakingNews.setPadding(0, 0, 0, 0)
             }
         }
 
@@ -143,6 +144,8 @@ class LatestFeedFragment : Fragment() {
             }
         }
     }
+
+    //pagination end
     private fun setUpRecyclerView(){
         newsAdapter= NewsAdapter()
         binding.rvBreakingNews.apply {
