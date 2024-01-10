@@ -1,5 +1,6 @@
 package com.example.news.ui.CategoriesFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -66,6 +67,17 @@ class SportsFragment : Fragment() {
         viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
         setUpRecyclerView()
 
+        newsAdapter.setOnItemClickListener {
+            Log.d(TAG, "onViewCreated: $it")
+
+            val bundle=Bundle().apply {
+                putString("URL",it.url)
+            }
+            Log.d(TAG, "onViewCreated: CLCIKED")
+            listener?.navigateToFragmentFromSports(bundle)
+
+
+        }
 
 
         viewModel.sportsCategoryNews.observe(viewLifecycleOwner, Observer {response->
@@ -173,5 +185,14 @@ class SportsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    private var listener: FragmentSportsListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = parentFragment as? FragmentSportsListener
+    }
+    interface FragmentSportsListener {
+        fun navigateToFragmentFromSports(data:Bundle)
     }
 }

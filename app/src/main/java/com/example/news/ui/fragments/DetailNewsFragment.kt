@@ -94,4 +94,5 @@ class DetailNewsFragment : Fragment() {
                 }
             }
     }
+
 }

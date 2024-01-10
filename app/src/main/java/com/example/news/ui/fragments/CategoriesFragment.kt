@@ -5,14 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.news.R
 import com.example.news.ViewPagerAdapter.ViewPagerAdapter
 import com.example.news.databinding.FragmentCategoriesBinding
+import com.example.news.ui.CategoriesFragment.BusinessFragment
+import com.example.news.ui.CategoriesFragment.EntertainmentFragment
+import com.example.news.ui.CategoriesFragment.HealthFragment
+import com.example.news.ui.CategoriesFragment.ScienceFragment
+import com.example.news.ui.CategoriesFragment.SportsFragment
+import com.example.news.ui.CategoriesFragment.TechnologyFragment
 import com.google.android.material.tabs.TabLayout
 
 //apikey=0e40a88fcc5d49b1a4fc8bf7b3881be1
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : Fragment(),BusinessFragment.FragmentBListener,EntertainmentFragment.FragmentEntertainmentListener
+,HealthFragment.FragmentHealthListener,ScienceFragment.FragmentScienceListener,SportsFragment.FragmentSportsListener,TechnologyFragment.FragmentTechnologyListener{
     private lateinit var binding:FragmentCategoriesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +84,49 @@ class CategoriesFragment : Fragment() {
         }
     }
 
+    override fun navigateToFragmentC(data:Bundle) {
+
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
+
+    override fun navigateToFragment(data: Bundle) {
+
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
+
+    override fun navigateToFragmentFromHealth(data: Bundle) {
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
+
+    override fun navigateToFragmentFromScience(data: Bundle) {
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
+
+    override fun navigateToFragmentFromSports(data: Bundle) {
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
+
+    override fun navigateToFragmentFromTechnology(data: Bundle) {
+        findNavController().navigate(
+            R.id.detailNewsFragment,
+            data
+        )
+    }
 
 
 }
