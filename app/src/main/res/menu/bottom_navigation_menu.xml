@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/latestFeedFragment"
+        android:title="Latest Feed"
+        android:icon="@drawable/baseline_home_24"
+        />
+    <item android:id="@+id/categoriesFragment"
+        android:title="Categories"
+        android:icon="@drawable/layers_fill"
+        />
+    <item android:id="@+id/searchNewsFragment"
+        android:title="Search News"
+        android:icon="@drawable/layers_fill"
+        />
+
+
+
+</menu>
