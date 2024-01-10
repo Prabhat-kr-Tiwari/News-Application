@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DetailScreenActivity"
+    android:padding="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <TextView
+        android:id="@+id/headline"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:text="Tesla’s Redesigned Highland Model 3 Now Available in the United States"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+        <ImageView
+            android:id="@+id/open_in_browser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_open_in_new_24"
+            app:layout_constraintStart_toEndOf="@id/headline"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            />
+    <TextView
+        android:id="@+id/author_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headline"
+        android:text="Author :"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:id="@+id/author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/author_txt"
+        app:layout_constraintTop_toBottomOf="@id/headline"
+        android:text="Chris Boylan"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:id="@+id/tvPublishedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024-01-10T18:09:39Z"
+        app:layout_constraintStart_toEndOf="@id/author_name"
+        app:layout_constraintTop_toBottomOf="@id/headline"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="40dp"
+
+
+
+        />
+    <ImageView
+        android:id="@+id/news_image"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:src="@drawable/images1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/author_txt"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/news_image"
+        android:text="After Hertz’s full-scale EV adoption plan resulted in its fleet of new Tesla Model 3s getting abused by rideshare drivers and renters alike, Hertz is selling off a portion of its fleet for wildly cheap prices. Before you go snatch up these electrified bargain"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        android:text="After Hertzs full-scale EV adoption plan resulted in its fleet of new Tesla Model 3s getting abused by rideshare drivers and renters alike, Hertz is selling off a portion of its fleet for wildly After Hertzs full-scale EV adoption plan resulted in its fleet of new Tesla Model 3s getting abused by rideshare drivers and renters alike, Hertz is selling off a portion of its fleet for wildly"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

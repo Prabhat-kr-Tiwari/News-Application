@@ -1,5 +1,6 @@
 package com.example.news.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.news.repository.NewsRepository
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.Utils.Constants.Companion.QUERY_PAGE_SIZE
+import com.example.news.ui.DetailScreenActivity
 
 import com.example.news.viewModel.NewsViewModel
 
@@ -55,18 +57,30 @@ class LatestFeedFragment : Fragment() {
         setUpRecyclerView()
 
         newsAdapter.setOnItemClickListener {
+
             Log.d(TAG, "onViewCreated: $it")
             /*val bundle = Bundle().apply {
                 putSerializable("article", it.url)
                putString("URL",it.url)
             }*/
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            findNavController().navigate(
+//            val bundle=Bundle().apply {
+//                putString("URL",it.url)
+//            }
+            /*findNavController().navigate(
                 R.id.action_latestFeedFragment_to_detailNewsFragment,
                 bundle
-            )
+            )*/
+//            requireContext().startActivity(Intent(requireContext(),DetailScreenActivity::class.java))
+
+            val intent = Intent(requireContext(), DetailScreenActivity::class.java)
+            val bundle = Bundle()
+            // Add data to the bundle
+            bundle.putSerializable("key", it) // Replace "key" with an appropriate key and selectedItem.dataValue with your data
+            // Put the bundle into the intent
+            intent.putExtras(bundle)
+            // Start the activity with the intent
+            requireContext().startActivity(intent)
+
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer {response->
