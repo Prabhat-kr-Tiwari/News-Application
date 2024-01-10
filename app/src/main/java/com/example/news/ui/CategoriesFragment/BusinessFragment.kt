@@ -2,6 +2,7 @@ package com.example.news.ui.CategoriesFragment
 
 import android.R
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.example.news.ViewModelProviderFactory.NewsViewModelProviderFactory
 import com.example.news.adapters.NewsAdapter
 import com.example.news.databinding.FragmentBusinessBinding
 import com.example.news.repository.NewsRepository
+import com.example.news.ui.DetailScreenActivity
 import com.example.news.ui.fragments.DetailNewsFragment
 import com.example.news.viewModel.NewsViewModel
 
@@ -65,7 +67,7 @@ class BusinessFragment : Fragment() {
         setUpRecyclerView()
 
 
-        newsAdapter.setOnItemClickListener {
+       /* newsAdapter.setOnItemClickListener {
             Log.d(TAG, "onViewCreated: $it")
 
             val bundle=Bundle().apply {
@@ -74,6 +76,19 @@ class BusinessFragment : Fragment() {
             Log.d(TAG, "onViewCreated: CLCIKED")
             listener?.navigateToFragmentC(bundle)
 
+
+        }*/
+        newsAdapter.setOnItemClickListener {
+
+            Log.d(TAG, "onViewCreated: $it")
+            val intent = Intent(requireContext(), DetailScreenActivity::class.java)
+            val bundle = Bundle()
+            // Add data to the bundle
+            bundle.putSerializable("key", it)
+            // Put the bundle into the intent
+            intent.putExtras(bundle)
+            // Start the activity with the intent
+            requireContext().startActivity(intent)
 
         }
 

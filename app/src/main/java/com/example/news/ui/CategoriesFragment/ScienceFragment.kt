@@ -1,6 +1,7 @@
 package com.example.news.ui.CategoriesFragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.example.news.adapters.NewsAdapter
 import com.example.news.databinding.FragmentHealthBinding
 import com.example.news.databinding.FragmentScienceBinding
 import com.example.news.repository.NewsRepository
+import com.example.news.ui.DetailScreenActivity
 import com.example.news.viewModel.NewsViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,7 +69,7 @@ class ScienceFragment : Fragment() {
         setUpRecyclerView()
 
 
-        newsAdapter.setOnItemClickListener {
+       /* newsAdapter.setOnItemClickListener {
             Log.d(TAG, "onViewCreated: $it")
 
             val bundle=Bundle().apply {
@@ -76,6 +78,19 @@ class ScienceFragment : Fragment() {
             Log.d(TAG, "onViewCreated: CLCIKED")
             listener?.navigateToFragmentFromScience(bundle)
 
+
+        }*/
+        newsAdapter.setOnItemClickListener {
+
+            Log.d(TAG, "onViewCreated: $it")
+            val intent = Intent(requireContext(), DetailScreenActivity::class.java)
+            val bundle = Bundle()
+            // Add data to the bundle
+            bundle.putSerializable("key", it)
+            // Put the bundle into the intent
+            intent.putExtras(bundle)
+            // Start the activity with the intent
+            requireContext().startActivity(intent)
 
         }
 

@@ -59,23 +59,10 @@ class LatestFeedFragment : Fragment() {
         newsAdapter.setOnItemClickListener {
 
             Log.d(TAG, "onViewCreated: $it")
-            /*val bundle = Bundle().apply {
-                putSerializable("article", it.url)
-               putString("URL",it.url)
-            }*/
-//            val bundle=Bundle().apply {
-//                putString("URL",it.url)
-//            }
-            /*findNavController().navigate(
-                R.id.action_latestFeedFragment_to_detailNewsFragment,
-                bundle
-            )*/
-//            requireContext().startActivity(Intent(requireContext(),DetailScreenActivity::class.java))
-
             val intent = Intent(requireContext(), DetailScreenActivity::class.java)
             val bundle = Bundle()
             // Add data to the bundle
-            bundle.putSerializable("key", it) // Replace "key" with an appropriate key and selectedItem.dataValue with your data
+            bundle.putSerializable("key", it)
             // Put the bundle into the intent
             intent.putExtras(bundle)
             // Start the activity with the intent
