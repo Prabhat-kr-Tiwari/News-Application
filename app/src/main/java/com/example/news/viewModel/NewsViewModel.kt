@@ -1,16 +1,32 @@
 package com.example.news.viewModel
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.*
+import android.net.NetworkCapabilities.*
+import android.net.ConnectivityManager.TYPE_WIFI
+import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
+import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
+import android.os.Build
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.news.Application.NewsApplication
 import com.example.news.Utils.Resource
 import com.example.news.model.NewsResponse
 import com.example.news.repository.NewsRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 
 
-class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
+class NewsViewModel(application: Application,
+                    val newsRepository: NewsRepository
+) : AndroidViewModel(application) {
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewPage = 1
@@ -71,9 +87,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
-        breakingNews.postValue(Resource.Loading())
-        val response = newsRepository.getBreakingNews(countryCode, breakingNewPage)
-        breakingNews.postValue(handleBreakingNewsResponse(response))
+       safeBreakingNewsCall(countryCode)
     }
 
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -95,9 +109,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
     }
 
     fun searchNews(searchQuery: String) = viewModelScope.launch {
-        searchNews.postValue(Resource.Loading())
-        val response = newsRepository.searchNews(searchQuery, searchNewsPage)
-        searchNews.postValue(handleSearchNewsResponse(response))
+        safeSearchNewsCall(searchQuery)
     }
 
     private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -119,10 +131,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
 
     fun getBreakingNewsBasedOnCategory(countryCode: String) = viewModelScope.launch {
-        basedOnCategoryNews.postValue(Resource.Loading())
-        val response =
-            newsRepository.getNewsBasedOnCategory(countryCode, basedOnCategoryNewsPage, category)
-        basedOnCategoryNews.postValue(handleBreakingNewsBasedOnCategoryNewsResponse(response))
+        safeBreakingNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleBreakingNewsBasedOnCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -145,17 +154,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
     //entairnment
     fun getNewsBasedOnEntertainmentCategory(countryCode: String) = viewModelScope.launch {
-        entertainmentCategoryNews.postValue(Resource.Loading())
-        val response = newsRepository.getNewsBasedOnCategory(
-            countryCode,
-            entertainmentCategoryNewsPage,
-            entertainmentcategory
-        )
-        entertainmentCategoryNews.postValue(
-            handleNewsBasedOnEntertainmentCategoryNewsResponse(
-                response
-            )
-        )
+        safeEntertainmentNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleNewsBasedOnEntertainmentCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -178,13 +177,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
     //health
     fun getNewsBasedOnHealthCategory(countryCode: String) = viewModelScope.launch {
-        healthCategoryNews.postValue(Resource.Loading())
-        val response = newsRepository.getNewsBasedOnCategory(
-            countryCode,
-            healthCategoryNewsPage,
-            healthcategory
-        )
-        healthCategoryNews.postValue(handleNewsBasedOnHealthCategoryNewsResponse(response))
+        safeHealthNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleNewsBasedOnHealthCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -207,13 +200,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
     //Science
     fun getNewsBasedOnScienceCategory(countryCode: String) = viewModelScope.launch {
-        scienceCategoryNews.postValue(Resource.Loading())
-        val response = newsRepository.getNewsBasedOnCategory(
-            countryCode,
-            scienceCategoryNewsPage,
-            sciencecategory
-        )
-        scienceCategoryNews.postValue(handleNewsBasedOnScienceCategoryNewsResponse(response))
+        safeScienceNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleNewsBasedOnScienceCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -236,13 +223,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
     //Sports
     fun getNewsBasedOnSportsCategory(countryCode: String) = viewModelScope.launch {
-        sportsCategoryNews.postValue(Resource.Loading())
-        val response = newsRepository.getNewsBasedOnCategory(
-            countryCode,
-            sportsCategoryNewsPage,
-            sportscategory
-        )
-        sportsCategoryNews.postValue(handleNewsBasedOnSportsCategoryNewsResponse(response))
+        safeSportsNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleNewsBasedOnSportsCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -265,13 +246,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
     //Technology
     fun getNewsBasedOnTechnologyCategory(countryCode: String) = viewModelScope.launch {
-        technologyCategoryNews.postValue(Resource.Loading())
-        val response = newsRepository.getNewsBasedOnCategory(
-            countryCode,
-            technologyCategoryNewsPage,
-            technologycategory
-        )
-        technologyCategoryNews.postValue(handleNewsBasedOnTechnologyCategoryNewsResponse(response))
+        safeTechnologyNewBasedOnCategoryCall(countryCode)
     }
 
     private fun handleNewsBasedOnTechnologyCategoryNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -290,6 +265,167 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
             }
         }
         return Resource.Error(response.message())
+    }
+
+    private suspend fun safeBreakingNewsCall(countryCode: String) {
+        breakingNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getBreakingNews(countryCode, breakingNewPage)
+                breakingNews.postValue(handleBreakingNewsResponse(response))
+            } else {
+                breakingNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    private suspend fun safeSearchNewsCall(searchQuery: String) {
+        searchNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.searchNews(searchQuery, searchNewsPage)
+                searchNews.postValue(handleSearchNewsResponse(response))
+            } else {
+                searchNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> searchNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    //business
+    private suspend fun safeBreakingNewBasedOnCategoryCall(countryCode: String) {
+        basedOnCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,basedOnCategoryNewsPage,category)
+                basedOnCategoryNews.postValue(handleBreakingNewsBasedOnCategoryNewsResponse(response))
+            } else {
+                basedOnCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> basedOnCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    //entairtainment
+    private suspend fun safeEntertainmentNewBasedOnCategoryCall(countryCode: String) {
+        entertainmentCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,entertainmentCategoryNewsPage,entertainmentcategory)
+                entertainmentCategoryNews.postValue(handleNewsBasedOnEntertainmentCategoryNewsResponse(response))
+            } else {
+                entertainmentCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> entertainmentCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+
+    private suspend fun safeHealthNewBasedOnCategoryCall(countryCode: String) {
+        healthCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,healthCategoryNewsPage,healthcategory)
+                healthCategoryNews.postValue(handleNewsBasedOnHealthCategoryNewsResponse(response))
+            } else {
+                healthCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> healthCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    private suspend fun safeScienceNewBasedOnCategoryCall(countryCode: String) {
+        scienceCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,scienceCategoryNewsPage,sciencecategory)
+                scienceCategoryNews.postValue(handleNewsBasedOnScienceCategoryNewsResponse(response))
+            } else {
+                scienceCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> scienceCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    private suspend fun safeSportsNewBasedOnCategoryCall(countryCode: String) {
+        sportsCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,sportsCategoryNewsPage,sportscategory)
+                sportsCategoryNews.postValue(handleNewsBasedOnSportsCategoryNewsResponse(response))
+            } else {
+                sportsCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> sportsCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+    private suspend fun safeTechnologyNewBasedOnCategoryCall(countryCode: String) {
+        technologyCategoryNews.postValue(Resource.Loading())
+        try {
+            if(checkInternetConnection()) {
+                val response = newsRepository.getNewsBasedOnCategory(countryCode,technologyCategoryNewsPage,technologycategory)
+                technologyCategoryNews.postValue(handleNewsBasedOnTechnologyCategoryNewsResponse(response))
+            } else {
+                technologyCategoryNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> technologyCategoryNews.postValue(Resource.Error("Network Failure"))
+
+            }
+        }
+    }
+
+
+    private fun checkInternetConnection(): Boolean {
+        val connectivityManager = getApplication<NewsApplication>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.d("CHECKPRABHAT", "checkInternetConnection: Here")
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
+                capabilities.hasTransport(TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            //these are not deprecated at api level below 23
+            connectivityManager.activeNetworkInfo?.run {
+                return when(type) {
+                    TYPE_WIFI -> true
+                    TYPE_MOBILE -> true
+                    TYPE_ETHERNET -> true
+                    else -> false
+                }
+            }
+        }
+        return false
     }
 
 

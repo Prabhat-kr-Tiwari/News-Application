@@ -54,7 +54,7 @@ class DetailNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val newsRepository = NewsRepository()
-        val viewModelProviderFactory= NewsViewModelProviderFactory(newsRepository)
+        val viewModelProviderFactory= NewsViewModelProviderFactory(requireActivity().application,newsRepository)
         viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
        /* val article = args.detail
 

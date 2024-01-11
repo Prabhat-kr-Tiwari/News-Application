@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -62,7 +63,7 @@ class BusinessFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val newsRepository = NewsRepository()
-        val viewModelProviderFactory= NewsViewModelProviderFactory(newsRepository)
+        val viewModelProviderFactory= NewsViewModelProviderFactory(requireActivity().application,newsRepository)
         viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
         setUpRecyclerView()
 
@@ -101,6 +102,7 @@ class BusinessFragment : Fragment() {
                     hideProgressBar()
                     response.message?.let {message->
                         Log.d(TAG, "onViewCreated: An error occured $message")
+                        Toast.makeText(activity, "An error occured  $message"  , Toast.LENGTH_LONG).show()
 
 
                     }

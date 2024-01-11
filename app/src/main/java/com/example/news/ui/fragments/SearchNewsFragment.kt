@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -60,7 +61,7 @@ class SearchNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val newsRepository = NewsRepository()
-        val viewModelProviderFactory= NewsViewModelProviderFactory(newsRepository)
+        val viewModelProviderFactory= NewsViewModelProviderFactory(requireActivity().application,newsRepository)
         viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
         setupRecyclerView()
 
@@ -109,6 +110,7 @@ class SearchNewsFragment : Fragment() {
                     hideProgressBar()
                     response.message?.let { message ->
                         Log.e(TAG, "An error occured: $message")
+                        Toast.makeText(activity, "An error occured  $message"  , Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
