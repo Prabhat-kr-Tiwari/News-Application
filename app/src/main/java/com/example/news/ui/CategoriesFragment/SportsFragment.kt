@@ -69,17 +69,7 @@ class SportsFragment : Fragment() {
         viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
         setUpRecyclerView()
 
-        /*newsAdapter.setOnItemClickListener {
-            Log.d(TAG, "onViewCreated: $it")
 
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            Log.d(TAG, "onViewCreated: CLCIKED")
-            listener?.navigateToFragmentFromSports(bundle)
-
-
-        }*/
         newsAdapter.setOnItemClickListener {
 
             Log.d(TAG, "onViewCreated: $it")
@@ -201,13 +191,5 @@ class SportsFragment : Fragment() {
                 }
             }
     }
-    private var listener: FragmentSportsListener? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = parentFragment as? FragmentSportsListener
-    }
-    interface FragmentSportsListener {
-        fun navigateToFragmentFromSports(data:Bundle)
-    }
 }

@@ -67,17 +67,7 @@ class BusinessFragment : Fragment() {
         setUpRecyclerView()
 
 
-       /* newsAdapter.setOnItemClickListener {
-            Log.d(TAG, "onViewCreated: $it")
 
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            Log.d(TAG, "onViewCreated: CLCIKED")
-            listener?.navigateToFragmentC(bundle)
-
-
-        }*/
         newsAdapter.setOnItemClickListener {
 
             Log.d(TAG, "onViewCreated: $it")
@@ -178,15 +168,7 @@ class BusinessFragment : Fragment() {
         }
 
     }
-    private var listener: FragmentBListener? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = parentFragment as? FragmentBListener
-    }
-    interface FragmentBListener {
-        fun navigateToFragmentC(data:Bundle)
-    }
 
 
 

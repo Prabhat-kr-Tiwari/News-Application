@@ -19,8 +19,7 @@ import com.example.news.ui.CategoriesFragment.TechnologyFragment
 import com.google.android.material.tabs.TabLayout
 
 //apikey=0e40a88fcc5d49b1a4fc8bf7b3881be1
-class CategoriesFragment : Fragment(),BusinessFragment.FragmentBListener,EntertainmentFragment.FragmentEntertainmentListener
-,HealthFragment.FragmentHealthListener,ScienceFragment.FragmentScienceListener,SportsFragment.FragmentSportsListener,TechnologyFragment.FragmentTechnologyListener{
+class CategoriesFragment : Fragment(){
     private lateinit var binding:FragmentCategoriesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,49 +83,7 @@ class CategoriesFragment : Fragment(),BusinessFragment.FragmentBListener,Enterta
         }
     }
 
-    override fun navigateToFragmentC(data:Bundle) {
 
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
-
-    override fun navigateToFragment(data: Bundle) {
-
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
-
-    override fun navigateToFragmentFromHealth(data: Bundle) {
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
-
-    override fun navigateToFragmentFromScience(data: Bundle) {
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
-
-    override fun navigateToFragmentFromSports(data: Bundle) {
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
-
-    override fun navigateToFragmentFromTechnology(data: Bundle) {
-        findNavController().navigate(
-            R.id.detailNewsFragment,
-            data
-        )
-    }
 
 
 }

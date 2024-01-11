@@ -71,17 +71,7 @@ class TechnologyFragment : Fragment() {
         setUpRecyclerView()
 
 
-        /*newsAdapter.setOnItemClickListener {
-            Log.d(TAG, "onViewCreated: $it")
-
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            Log.d(TAG, "onViewCreated: CLCIKED")
-            listener?.navigateToFragmentFromTechnology(bundle)
-
-
-        }*/
+       
         newsAdapter.setOnItemClickListener {
 
             Log.d(TAG, "onViewCreated: $it")
@@ -201,13 +191,5 @@ class TechnologyFragment : Fragment() {
                 }
             }
     }
-    private var listener: FragmentTechnologyListener? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = parentFragment as? FragmentTechnologyListener
-    }
-    interface FragmentTechnologyListener {
-        fun navigateToFragmentFromTechnology(data:Bundle)
-    }
 }

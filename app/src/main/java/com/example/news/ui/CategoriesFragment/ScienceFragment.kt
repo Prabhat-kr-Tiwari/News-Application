@@ -69,17 +69,7 @@ class ScienceFragment : Fragment() {
         setUpRecyclerView()
 
 
-       /* newsAdapter.setOnItemClickListener {
-            Log.d(TAG, "onViewCreated: $it")
 
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            Log.d(TAG, "onViewCreated: CLCIKED")
-            listener?.navigateToFragmentFromScience(bundle)
-
-
-        }*/
         newsAdapter.setOnItemClickListener {
 
             Log.d(TAG, "onViewCreated: $it")
@@ -197,13 +187,5 @@ class ScienceFragment : Fragment() {
                 }
             }
     }
-    private var listener: FragmentScienceListener? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = parentFragment as? FragmentScienceListener
-    }
-    interface FragmentScienceListener {
-        fun navigateToFragmentFromScience(data:Bundle)
-    }
 }
