@@ -1,5 +1,6 @@
 package com.example.news.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import com.example.news.adapters.NewsAdapter
 import com.example.news.databinding.FragmentLatestFeedBinding
 import com.example.news.databinding.FragmentSearchNewsBinding
 import com.example.news.repository.NewsRepository
+import com.example.news.ui.DetailScreenActivity
 import com.example.news.viewModel.NewsViewModel
 import kotlinx.coroutines.MainScope
 
@@ -63,19 +65,19 @@ class SearchNewsFragment : Fragment() {
         setupRecyclerView()
 
 
+
         newsAdapter.setOnItemClickListener {
+
             Log.d(TAG, "onViewCreated: $it")
-            /*val bundle = Bundle().apply {
-                putSerializable("article", it.url)
-               putString("URL",it.url)
-            }*/
-            val bundle=Bundle().apply {
-                putString("URL",it.url)
-            }
-            findNavController().navigate(
-                R.id.action_searchNewsFragment_to_detailNewsFragment,
-                bundle
-            )
+            val intent = Intent(requireContext(), DetailScreenActivity::class.java)
+            val bundle = Bundle()
+            // Add data to the bundle
+            bundle.putSerializable("key", it)
+            // Put the bundle into the intent
+            intent.putExtras(bundle)
+            // Start the activity with the intent
+            requireContext().startActivity(intent)
+
         }
 
 

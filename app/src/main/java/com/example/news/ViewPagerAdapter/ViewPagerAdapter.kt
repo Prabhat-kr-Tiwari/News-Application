@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.news.ui.CategoriesFragment.BusinessFragment
 import com.example.news.ui.CategoriesFragment.EntertainmentFragment
-import com.example.news.ui.CategoriesFragment.EverythingFragment
 import com.example.news.ui.CategoriesFragment.HealthFragment
 import com.example.news.ui.CategoriesFragment.ScienceFragment
 import com.example.news.ui.CategoriesFragment.SportsFragment
